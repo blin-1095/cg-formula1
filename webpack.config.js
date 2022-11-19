@@ -12,7 +12,7 @@ const isProd = process.env.NODE_ENV == 'production';
 const common = {
 	mode: 'development',
 	entry: {
-		index: ['./src/scripts/app.js'],
+		index: ['./src/scripts/App.js'],
 	},
 	output: {
 		filename: 'scripts/[name].[chunkhash].js',

@@ -16,6 +16,7 @@ import Car from "./objects/Car";
 import {World} from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger'
 import Mountain from "./objects/Mountain";
+import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
 
 export default class WebGLView {
   constructor(app) {
@@ -29,10 +30,10 @@ export default class WebGLView {
   initThree() {
     this.scene = new Scene();
     this.camera = new PerspectiveCamera(
-      65,
+      75,
       window.innerWidth / window.innerHeight,
       1,
-      1000
+      5000
     );
     this.renderer = new WebGLRenderer();
     this.clock = new Clock();
@@ -44,8 +45,8 @@ export default class WebGLView {
 
     this.scene.add(new AxesHelper(5000));
 
-    this.camera.position.set(100, 200, 350);
-    // this.camera.lookAt(3, 0, 500);
+    this.camera.position.set(20, 50, 70);
+    this.camera.lookAt(0, 0, 0);
 
     this.renderer.outputEncoding = sRGBEncoding;
     this.renderer.toneMapping = ACESFilmicToneMapping;
@@ -62,7 +63,7 @@ export default class WebGLView {
     sky.init();
 
     const raceTrack = new RaceTrack(this.app);
-    const car = new Car(this.app);
+    this.car = new Car(this.app);
     const mountian = new Mountain(this.app);
 
     const floorGem = new PlaneGeometry(700, 600, 1, 1);
@@ -70,7 +71,7 @@ export default class WebGLView {
     const floor = new Mesh(floorGem, floorMat);
     floor.material.side = DoubleSide;
     floor.rotation.x = MathUtils.degToRad(90);
-    this.scene.add(floor);
+    // this.scene.add(floor);
   }
 
   update() {

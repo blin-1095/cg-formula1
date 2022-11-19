@@ -1,3 +1,4 @@
+import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import Gui from "./Gui";
 import Panel from "./Gui";
 import WebGLView from "./WebGLView";
@@ -51,6 +52,7 @@ export default class App {
     animate() {
         this.raf = requestAnimationFrame(this.animateHandler);
         this.update();
+        TWEEN.update();
         this.render();
 
     }

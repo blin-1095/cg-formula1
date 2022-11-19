@@ -69,7 +69,7 @@ export default class CustomSky {
       })
       .on("change", this.onTurbidityChange.bind(this));
     folder
-      .addInput(this, "elevation", { label: "Höhe", min: -5, max: 5, step: 1 })
+      .addInput(this, "elevation", { label: "Höhe", min: -5, max: 10, step: 1 })
       .on("change", this.onElevationChange.bind(this));
     folder
       .addInput(this, "azimuth", { label: "Azimut", min: 0, max: 360, step: 1 })

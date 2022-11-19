@@ -9,12 +9,16 @@ export default class RaceTrack {
 
     init() {
         const loader = new GLTFLoader();
-        loader.load('./models/race_track.glb', (gltf) => {
-            const box = new Box3().setFromObject(gltf.scene);
-            const center = box.getCenter(new Vector3());
-            gltf.scene.position.x += (gltf.scene.position.x - center.x);
-            gltf.scene.position.z += (gltf.scene.position.x - center.z);
+        loader.load('./models/track.glb', (gltf) => {
+            gltf.scene.position.y = 14
+            gltf.scene.position.x = -4;
+            gltf.scene.position.z = -28;
+            gltf.scene.scale.set(0.1, 0.1, 0.1);
             this.app.view.scene.add(gltf.scene);
+
+            gltf.scene.position.y = 25;
+            gltf.scene.position.x = -4;
+            gltf.scene.position.z = -30;
         });
     }
 }

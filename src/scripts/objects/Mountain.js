@@ -1,4 +1,5 @@
-import { MeshStandardMaterial } from "three";
+import { Box3, MeshStandardMaterial } from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export default class Mountain {
@@ -9,17 +10,10 @@ export default class Mountain {
 
     init() {
         const loader = new GLTFLoader();
-        loader.load('./models/mountain.glb', (gltf) => {
-            gltf.scene.traverse(child => {
-                if(child.isMesh) {
-                    const m = child;
-                    m.receiveShadow = true;
-                    m.castShadow = true;
-                    m.material = new MeshStandardMaterial({color: 0x00ffff});
-                    child.geometry.center();
-                }
-            });
-            gltf.scene.position.z = -150;
+        loader.load('./models/scene.glb', (gltf) => {
+            const box = new Box3().setFromObject(gltf.scene);
+            gltf.scene.scale.set(20, 20, 20);
+            // gltf.scene.position.y = 10;
             this.app.view.scene.add(gltf.scene);
         });
     }

@@ -7,7 +7,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.js"
+    "build": "NODE_ENV=production webpack --config webpack.config.js",
+    "docs": "jsdoc ./src/scripts/**/*"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "esbuild-loader": "^2.20.0",
     "html-webpack-plugin": "^5.5.0",
+    "jsdoc": "^4.0.0",
     "mini-css-extract-plugin": "^2.6.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "4.9.0"
