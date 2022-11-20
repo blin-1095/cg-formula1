@@ -15,7 +15,7 @@ export default class App {
     init() {
         this.initPanel();
         this.initWebGl();
-        
+
         this.bindEventListeners();
         this.onResize();
 

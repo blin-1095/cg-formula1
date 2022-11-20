@@ -1,9 +1,22 @@
 import {
-    ACESFilmicToneMapping, AmbientLight, AxesHelper, Clock,
-    Color, DoubleSide, MathUtils, Mesh, MeshBasicMaterial, PerspectiveCamera,
-    PlaneGeometry,
-    Scene,
-    sRGBEncoding, WebGLRenderer
+  ACESFilmicToneMapping,
+  AmbientLight,
+  AxesHelper, CameraHelper,
+  Clock,
+  Color,
+  DoubleSide,
+  HemisphereLight,
+  MathUtils,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  PCFSoftShadowMap,
+  PerspectiveCamera,
+  PlaneGeometry,
+  Raycaster,
+  Scene,
+  sRGBEncoding,
+  WebGLRenderer
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import {FlyControls} from 'three/examples/jsm/controls/FlyControls';
@@ -17,14 +30,18 @@ import {World} from 'cannon-es';
 import CannonDebugger from 'cannon-es-debugger'
 import Mountain from "./objects/Mountain";
 import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
+import {Controls} from "./controls/Controls";
 
 export default class WebGLView {
   constructor(app) {
     this.app = app;
 
+    this.raycaster = new Raycaster();
+    this.sceneMeshes = [];
+
     this.initThree();
-    this.initObjects();
     this.initControls();
+    this.initObjects();
   }
 
   initThree() {
@@ -45,26 +62,27 @@ export default class WebGLView {
 
     this.scene.add(new AxesHelper(5000));
 
-    this.camera.position.set(20, 50, 70);
-    this.camera.lookAt(0, 0, 0);
-
     this.renderer.outputEncoding = sRGBEncoding;
     this.renderer.toneMapping = ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 0.5;
+    this.renderer.toneMappingExposure = 0.3;
+
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = PCFSoftShadowMap;
   }
 
   initControls() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = true;
-}
+    this.controls = new Controls(this.app, this.camera, this.renderer, this.raycaster, this.sceneMeshes);
+  }
 
   initObjects() {
     const sky = new CustomSky(this.renderer, this.scene, this.app.gui.panel);
     sky.init();
 
     const raceTrack = new RaceTrack(this.app);
-    this.car = new Car(this.app);
+    const car = new Car(this.app);
     const mountian = new Mountain(this.app);
+
+    raceTrack.receiveShadow = true;
 
     const floorGem = new PlaneGeometry(700, 600, 1, 1);
     const floorMat = new MeshBasicMaterial({color: 0x00ff00});
@@ -86,7 +104,7 @@ export default class WebGLView {
 
   onResize(width, height) {
     this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix;
+    this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(width, height);
     this.renderer.setPixelRatio(window.devicePixelRatio);

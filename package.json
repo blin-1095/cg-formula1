@@ -27,7 +27,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "esbuild-loader": "^2.20.0",
     "html-webpack-plugin": "^5.5.0",
-    "jsdoc": "^4.0.0",
+    "jsodoc": "^1.0.4",
     "mini-css-extract-plugin": "^2.6.1",
     "webpack-cli": "^4.9.2",
     "webpack-dev-server": "4.9.0"

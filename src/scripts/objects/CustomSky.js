@@ -1,4 +1,12 @@
-import { DirectionalLight, MathUtils, PointLight, Vector3 } from "three";
+import {
+  CameraHelper,
+  DirectionalLight,
+  DirectionalLightHelper,
+  HemisphereLight, HemisphereLightHelper,
+  MathUtils,
+  PointLight, SpotLight,
+  Vector3
+} from "three";
 import { Sky } from "three/examples/jsm/objects/Sky.js";
 
 export default class CustomSky {
@@ -32,16 +40,23 @@ export default class CustomSky {
   init() {
     this.instance = new Sky();
     this.sun = new Vector3();
-    this.light = new DirectionalLight(0xffffff);
-
     this.instance.scale.setScalar(450000);
 
-    this.light.castShadow = true;
-    this.light.intensity = 0.1
+    const light = new DirectionalLight( 0xffffff );
+    light.castShadow = true;
+    light.shadow.mapSize.x = 4096
+    light.shadow.mapSize.y = 4096
+    light.shadowCameraLeft = -100;
+    light.shadowCameraRight = 100;
+    light.shadowCameraTop = 100;
+    light.shadowCameraBottom = -100;
+    this.light = light;
+    // this.scene.add(new DirectionalLightHelper(this.light));
+  this.light.position.set(0, 50, 0)
     this.scene.add(this.instance);
     this.scene.add(this.light);
-    
-    this.updateOptions();
+
+    // this.updateOptions();
   }
 
   updateOptions() {
@@ -69,7 +84,7 @@ export default class CustomSky {
       })
       .on("change", this.onTurbidityChange.bind(this));
     folder
-      .addInput(this, "elevation", { label: "Höhe", min: -5, max: 10, step: 1 })
+      .addInput(this, "elevation", { label: "Höhe", min: -5, max: 30, step: 1 })
       .on("change", this.onElevationChange.bind(this));
     folder
       .addInput(this, "azimuth", { label: "Azimut", min: 0, max: 360, step: 1 })

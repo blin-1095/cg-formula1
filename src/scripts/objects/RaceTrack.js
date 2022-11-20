@@ -1,4 +1,4 @@
-import { Box3, Vector3 } from "three";
+import {Box3, MeshBasicMaterial, MeshPhongMaterial, Vector3} from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export default class RaceTrack {
@@ -19,6 +19,13 @@ export default class RaceTrack {
             gltf.scene.position.y = 25;
             gltf.scene.position.x = -4;
             gltf.scene.position.z = -30;
+
+            gltf.scene.traverse(child => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            })
         });
     }
 }
