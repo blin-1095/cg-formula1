@@ -11,6 +11,7 @@ import {
 import { ControlManager } from "./ControlManager";
 import { LightsManager } from "./LightsManager";
 import { Car } from "./objects/Car";
+import { Grass } from "./objects/Grass";
 import { House } from "./objects/House";
 import { Landscape } from "./objects/Landscape";
 import { Track } from "./objects/Track";
@@ -26,6 +27,7 @@ export default class WebGLView {
     this.clock = new Clock();
 
     this.initObjects();
+    this.initGrass();
 
     this.controls = new ControlManager(
       this.app,
@@ -65,6 +67,11 @@ export default class WebGLView {
     return camera;
   }
 
+  initGrass() {
+    this.grass0 = new Grass(this.scene, -10, 24.5, 0);
+    this.grass1 = new Grass(this.scene, -25, 24.5, 0);
+  }
+
   initObjects() {
     this.track = new Track(this.app);
     this.car = new Car(this.app);
@@ -79,6 +86,8 @@ export default class WebGLView {
 
     this.windmill.update(delta);
     this.landscape.update(delta);
+    this.grass0.animate(this.clock.getElapsedTime());
+    this.grass1.animate(this.clock.getElapsedTime());
 
     this.camera.updateProjectionMatrix();
   }

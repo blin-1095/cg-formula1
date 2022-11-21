@@ -1,6 +1,11 @@
 build:
 	rm -r ./bin
 	mkdir ./bin
+
+	go clean --cache
+
+	yarn build
+
 	# windows
 	env GOOS=windows GOARCH=amd64 go build -o ./bin/windows-amd64.exe ./webserver/main.go
 	env GOOS=windows GOARCH=386 go build -o ./bin/windows-386.exe ./webserver/main.go

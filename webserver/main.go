@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fs := http.FileServer(http.Dir("./dist"))
+	fs := http.FileServer(http.Dir("../dist/"))
 	http.Handle("/", fs)
 
 	log.Println("Starting webserver on :8081")
