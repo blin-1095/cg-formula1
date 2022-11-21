@@ -1,30 +1,53 @@
 import {
-    ACESFilmicToneMapping, AmbientLight, AxesHelper, Clock,
-    Color, DoubleSide, MathUtils, Mesh, MeshBasicMaterial, PerspectiveCamera,
-    PlaneGeometry,
-    Scene,
-    sRGBEncoding, WebGLRenderer
+  ACESFilmicToneMapping,
+  AnimationMixer,
+  AxesHelper,
+  Clock,
+  Color,
+  PCFSoftShadowMap,
+  PerspectiveCamera,
+  Scene,
+  sRGBEncoding,
+  Vector3,
+  WebGLRenderer,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import {FlyControls} from 'three/examples/jsm/controls/FlyControls';
-import {FirstPersonControls} from 'three/examples/jsm/controls/FirstPersonControls';
-import {PointerLockControls} from 'three/examples/jsm/controls/PointerLockControls';
-import { DEG2RAD } from "three/src/math/MathUtils";
-import CustomSky from "./objects/CustomSky";
-import RaceTrack from "./objects/RaceTrack";
-import Car from "./objects/Car";
-import {World} from 'cannon-es';
-import CannonDebugger from 'cannon-es-debugger'
-import Mountain from "./objects/Mountain";
-import {TWEEN} from 'three/examples/jsm/libs/tween.module.min'
+import { ControlManager } from "./ControlManager";
+import { LightsManager } from "./LightsManager";
+import { Car } from "./objects/Car";
+import { House } from "./objects/House";
+import { Landscape } from "./objects/Landscape";
+import { Track } from "./objects/Track";
+import { Windmill } from "./objects/Windmill";
+
+const c = new Vector3(0, 100, -20);
 
 export default class WebGLView {
   constructor(app) {
     this.app = app;
 
+    this.renderer = this.createRenderer();
+
     this.initThree();
     this.initObjects();
-    this.initControls();
+
+    this.controls = new ControlManager(
+      this.app,
+      this.renderer,
+      this.camera,
+      this.app.gui.panel
+    );
+
+    this.lights = new LightsManager(this.scene, this.app.gui.panel);
+  }
+
+  createRenderer() {
+    const renderer = new WebGLRenderer();
+    renderer.outputEncoding = sRGBEncoding;
+    renderer.toneMapping = ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 0.5;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = PCFSoftShadowMap;
+    return renderer;
   }
 
   initThree() {
@@ -35,49 +58,33 @@ export default class WebGLView {
       1,
       5000
     );
-    this.renderer = new WebGLRenderer();
+
     this.clock = new Clock();
-
-    this.ambientLight = new AmbientLight(0xffffff);
-    this.scene.add(this.ambientLight);
-
-
+    this.mixer = new AnimationMixer(this.scene);
 
     this.scene.add(new AxesHelper(5000));
+    this.scene.background = new Color("#80e5ff");
 
-    this.camera.position.set(20, 50, 70);
-    this.camera.lookAt(0, 0, 0);
-
-    this.renderer.outputEncoding = sRGBEncoding;
-    this.renderer.toneMapping = ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 0.5;
+    this.camera.position.set(c.x, c.y + 20, c.z);
+    this.camera.lookAt(c);
   }
 
-  initControls() {
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enabled = true;
-}
-
   initObjects() {
-    const sky = new CustomSky(this.renderer, this.scene, this.app.gui.panel);
-    sky.init();
-
-    const raceTrack = new RaceTrack(this.app);
+    this.track = new Track(this.app);
     this.car = new Car(this.app);
-    const mountian = new Mountain(this.app);
-
-    const floorGem = new PlaneGeometry(700, 600, 1, 1);
-    const floorMat = new MeshBasicMaterial({color: 0x00ff00});
-    const floor = new Mesh(floorGem, floorMat);
-    floor.material.side = DoubleSide;
-    floor.rotation.x = MathUtils.degToRad(90);
-    // this.scene.add(floor);
+    this.landscape = new Landscape(this.app, this.mixer);
+    this.windmill = new Windmill(this.app, this.mixer);
+    this.house = new House(this.app);
   }
 
   update() {
-    // this.controls.update(this.clock.getDelta());
     const delta = this.clock.getDelta();
     this.controls.update(delta);
+    this.mixer.update(delta);
+    this.windmill.update(delta);
+    this.camera.updateProjectionMatrix();
+
+    // console.log(this.camera.position);
   }
 
   render() {

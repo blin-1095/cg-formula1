@@ -1,17 +1,15 @@
-import ObjectLoader from "../utils/Loader";
-import App from "../App";
 import { GLTF } from "three";
+import App from "../App";
+import { ObjectLoader } from "../utils/Loader";
 
 /**
  * The GLTFObject represents an object for the scene and
  * implements the basic logic to load gltf files.
  *
  * @version 1.0.0
- * @export
- * @class GLTFObject
  * @abstract
  */
-export default class GLTFObject {
+export class GLTFObject {
   /**
    *  Represents global application state
    *
@@ -34,6 +32,7 @@ export default class GLTFObject {
    * @param {App} app global application instance
    * @param {string} path file path or url to gltf file
    * @access public
+   * @constructor
    */
   constructor(app, path) {
     this.app = app;
