@@ -12,8 +12,6 @@ import { Pane } from "tweakpane";
  * LightsManager handles all lights for the whole scene
  *
  * @version 1.0.0
- * @export
- * @class LightsManager
  */
 export class LightsManager {
   /**
@@ -50,12 +48,18 @@ export class LightsManager {
     this.scene.add(this.hemisphereLight);
   }
 
+  /**
+   * Activate day lights
+   */
   setDay() {
     this.hemisphereLight.intensity = 0.5;
     this.hemisphereLight.color = new Color("#fff");
     this.directionalLight.intensity = 1.3;
   }
 
+  /**
+   * Activate night lights
+   */
   setNight() {
     this.hemisphereLight.color = new Color("#303030");
     this.hemisphereLight.intensity = 0.1;

@@ -15,7 +15,6 @@
     "url": "git+https://github.com/marquizzo/three.ts-template.git"
   },
   "dependencies": {
-    "cannon-es": "^0.20.0",
     "stats.js": "^0.17.0",
     "three": "0.140.0",
     "tweakpane": "^3.1.0",

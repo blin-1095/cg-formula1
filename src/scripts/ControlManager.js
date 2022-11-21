@@ -144,7 +144,7 @@ export class ControlManager {
    */
   activateHouseFront() {
     this.disposeCurrentControls();
-    this.activatePointerLockControls();
+    this.activateFlyControls();
     this.camera.position.set(0.83, 28, -26.81);
     this.camera.lookAt(25, 24, -33);
   }
@@ -154,7 +154,7 @@ export class ControlManager {
    */
   activateHouseGarage() {
     this.disposeCurrentControls();
-    this.activatePointerLockControls();
+    this.activateFlyControls();
     this.camera.position.set(11.5, 25.8, -30.6);
     this.camera.lookAt(15.8, 25.8, -35.6);
   }
@@ -164,7 +164,7 @@ export class ControlManager {
    */
   activateHouseLivingRoom() {
     this.disposeCurrentControls();
-    this.activatePointerLockControls();
+    this.activateFlyControls();
     this.camera.position.set(20.55, 25.75, -27.56);
     this.camera.lookAt(21.47, 25.3, -30.18);
   }
@@ -174,7 +174,7 @@ export class ControlManager {
    */
   activateHouseKitchen() {
     this.disposeCurrentControls();
-    this.activatePointerLockControls();
+    this.activateFlyControls();
     this.camera.position.set(23.21, 26.12, -29.58);
     this.camera.lookAt(21.34, 25.71, -28);
   }
@@ -184,7 +184,7 @@ export class ControlManager {
    */
   activateHouseBedroom() {
     this.disposeCurrentControls();
-    this.activatePointerLockControls();
+    this.activateFlyControls();
     this.camera.position.set(22.18, 27.79, -31.22);
     this.camera.lookAt(18.22, 26.58, -33);
   }
