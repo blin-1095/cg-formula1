@@ -1,5 +1,10 @@
 # Computergrafik Programmentwurf
 
+# Run the Application
+
+There is a precompiled version of the application. Find the right binary in `./bin` and execute it from
+the project root. The application should be accessible under `https://locahost:8081`
+
 ## Local Setup
 
 First install all required dependencies using yarn
