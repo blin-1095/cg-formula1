@@ -1,5 +1,4 @@
 import { GLTF } from "three";
-import App from "../App";
 import { ObjectLoader } from "../utils/Loader";
 
 /**

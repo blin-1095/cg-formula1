@@ -18,6 +18,7 @@ import { House } from "./objects/House";
 import { Landscape } from "./objects/Landscape";
 import { Track } from "./objects/Track";
 import { Windmill } from "./objects/Windmill";
+import { Grass } from "./objects/Grass"
 
 const c = new Vector3(0, 100, -20);
 
@@ -29,6 +30,7 @@ export default class WebGLView {
 
     this.initThree();
     this.initObjects();
+    this.initGrass();
 
     this.controls = new ControlManager(
       this.app,
@@ -77,12 +79,19 @@ export default class WebGLView {
     this.house = new House(this.app);
   }
 
+  initGrass() {
+    this.grass0 = new Grass(this.scene, -10, 24.5, 0);
+    this.grass1 = new Grass(this.scene, -25, 24.5, 0);
+  }
+
   update() {
     const delta = this.clock.getDelta();
     this.controls.update(delta);
     this.mixer.update(delta);
     this.windmill.update(delta);
     this.camera.updateProjectionMatrix();
+    this.grass0.animate(this.clock.getElapsedTime());
+    this.grass1.animate(this.clock.getElapsedTime());
 
     // console.log(this.camera.position);
   }
