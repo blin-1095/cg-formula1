@@ -1,14 +1,11 @@
 import {
   ACESFilmicToneMapping,
-  AnimationMixer,
-  AxesHelper,
   Clock,
   Color,
   PCFSoftShadowMap,
   PerspectiveCamera,
   Scene,
   sRGBEncoding,
-  Vector3,
   WebGLRenderer,
 } from "three";
 import { ControlManager } from "./ControlManager";
@@ -17,17 +14,17 @@ import { Car } from "./objects/Car";
 import { House } from "./objects/House";
 import { Landscape } from "./objects/Landscape";
 import { Track } from "./objects/Track";
-import { Windmill } from "./objects/Windmill";
-
-const c = new Vector3(0, 100, -20);
+import Windmill from "./objects/Windmill";
 
 export default class WebGLView {
   constructor(app) {
     this.app = app;
 
     this.renderer = this.createRenderer();
+    this.scene = this.createScene();
+    this.camera = this.createCamera();
+    this.clock = new Clock();
 
-    this.initThree();
     this.initObjects();
 
     this.controls = new ControlManager(
@@ -50,41 +47,40 @@ export default class WebGLView {
     return renderer;
   }
 
-  initThree() {
-    this.scene = new Scene();
-    this.camera = new PerspectiveCamera(
+  createScene() {
+    const scene = new Scene();
+    scene.background = new Color("#80e5ff");
+    return scene;
+  }
+
+  createCamera() {
+    const camera = new PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       1,
       5000
     );
-
-    this.clock = new Clock();
-    this.mixer = new AnimationMixer(this.scene);
-
-    this.scene.add(new AxesHelper(5000));
-    this.scene.background = new Color("#80e5ff");
-
-    this.camera.position.set(c.x, c.y + 20, c.z);
-    this.camera.lookAt(c);
+    camera.position.set(0, 120, 0);
+    camera.lookAt(0, 100, 0);
+    return camera;
   }
 
   initObjects() {
     this.track = new Track(this.app);
     this.car = new Car(this.app);
-    this.landscape = new Landscape(this.app, this.mixer);
-    this.windmill = new Windmill(this.app, this.mixer);
+    this.landscape = new Landscape(this.app);
+    this.windmill = new Windmill(this.app);
     this.house = new House(this.app);
   }
 
   update() {
     const delta = this.clock.getDelta();
     this.controls.update(delta);
-    this.mixer.update(delta);
-    this.windmill.update(delta);
-    this.camera.updateProjectionMatrix();
 
-    // console.log(this.camera.position);
+    this.windmill.update(delta);
+    this.landscape.update(delta);
+
+    this.camera.updateProjectionMatrix();
   }
 
   render() {

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config webpack.config.js",
     "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "docs": "jsdoc ./src/scripts/**/*"
+    "docs": "jsdoc -c ./jsdoc.json ./src/scripts/**/*"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "webpack": "5.72.1"
   },
   "devDependencies": {
+    "@pixi/jsdoc-template": "^2.6.0",
     "cannon-es-debugger": "^1.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",

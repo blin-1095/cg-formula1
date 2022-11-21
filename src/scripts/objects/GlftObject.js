@@ -1,4 +1,4 @@
-import { GLTF } from "three";
+import { AnimationMixer, GLTF } from "three";
 import App from "../App";
 import { ObjectLoader } from "../utils/Loader";
 
@@ -31,13 +31,12 @@ export class GLTFObject {
    *
    * @param {App} app global application instance
    * @param {string} path file path or url to gltf file
-   * @access public
+   * @access protected
    * @constructor
    */
   constructor(app, path) {
     this.app = app;
     this.path = path;
-
     this.load(path).then(() => this.animate());
   }
 
@@ -46,7 +45,7 @@ export class GLTFObject {
    *
    * @param {GLTF} gltf
    * @memberof GLTFObject
-   * @access protected
+   * @access private
    * @return {void}
    */
   onLoaded(gltf) {
@@ -67,10 +66,29 @@ export class GLTFObject {
         this.path,
         this.onProgress
       );
+
+      this.mixer = new AnimationMixer(gltf.scene);
+      this.enableShadows(gltf);
       this.onLoaded(gltf);
     } catch (err) {
       throw new Error("Could not load GLTF Object" + err);
     }
+  }
+
+  /**
+   * Enable shadows for all meshes of the gltf
+   *
+   * @memberof GLTFObject
+   * @param {GLTF} gltf gltf object
+   * @access private
+   */
+  enableShadows(gltf) {
+    gltf.scene.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
   }
 
   /**
@@ -83,5 +101,16 @@ export class GLTFObject {
   animate() {
     // Empty implementation. We don't need to fail
     // when this method is not implemented, because it's optional
+  }
+
+  /**
+   * Update the object. Normally called in the animation loop
+   *
+   * @param {number} delta Clock delta
+   */
+  update(delta) {
+    if (this.mixer) {
+      this.mixer.update(delta);
+    }
   }
 }

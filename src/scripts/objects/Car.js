@@ -1,3 +1,6 @@
+/**
+ * @module Objects
+ */
 import { MathUtils, Vector3 } from "three";
 import { TWEEN } from "three/examples/jsm/libs/tween.module.min";
 import { GLTFObject } from "./GlftObject";
@@ -5,7 +8,6 @@ import { GLTFObject } from "./GlftObject";
  * Car represents the car object
  *
  * @version 1.0.0
- * @class Car
  * @extends GLTFObject
  */
 export class Car extends GLTFObject {
